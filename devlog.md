@@ -11,3 +11,8 @@ In this session, I will be adding the index.py file, which I will add the functi
 
 SESSION END
 During this session, I was able to create the file itself and declare the functions I will be filling in later. I added docstrings to the functions themselves so that I can easily understand what to do when the time comes. I decided to go with an object-oriented approach, as this would be most appropriate for a structure with nodes. This will make it much easier to traverse the nodes and carry out the necessary actions. Next, I plan on implementing the functions one-by-one. I will decide which function to implement at the start of the next session.
+
+# 12/10/2025 7:04 PM
+
+SESSION START
+For this session, I will implement the header class, as it seems to be the easiest to do, since I simply need to figure out the partitioning and make the read/write functions. I aim to complete this by the end of the session.
