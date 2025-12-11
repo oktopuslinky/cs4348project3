@@ -26,3 +26,8 @@ During this session, I was able to implement the header class. It was not as sim
 
 SESSION START
 In this session, I will implement the node class, so that I can start working on the b-tree node management system. I will finish the read and write functions necessary for the node. I will have to make sure that I accurately keep track of the block number and don't accidentally offset any pointer.
+
+# 12/10/2025 7:44 PM
+
+SESSION END
+I implemented the node class successfully. The node class now is able to read and write a node from a block. While I have not fully tested this class yet, I will eventually test it through implementation. As of right now, the logic seems sound.

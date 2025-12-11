@@ -1,6 +1,10 @@
 BLOCK_SIZE = 512
 MAGIC = b"4348PRJ3"
 
+T = 10
+MAX_KEYS = 2*T - 1
+MAX_CHILDREN = 2*T
+
 def u64(x): 
     return x.to_bytes(8, 'big')
 def from_u64(b): 
@@ -46,18 +50,54 @@ class Node:
     Represents one b-tree node stored in a 512-byte block.
     """
 
+    def __init__(self, block_id, parent=0, nkeys=0, keys=None, vals=None, children=None):
+        self.block_id = block_id
+        self.parent = parent
+        self.nkeys = nkeys
+        self.keys = keys or [0]*MAX_KEYS
+        self.vals = vals or [0]*MAX_KEYS
+        self.children = children or [0]*MAX_CHILDREN
+
     @staticmethod
     def read(f, block_id):
         """
         Reads b-tree node from given block id, returns fully populated node instance
         """
-        pass
+        f.seek(block_id * BLOCK_SIZE)
+        data = f.read(BLOCK_SIZE)
+        if len(data) < BLOCK_SIZE:
+            raise ValueError("Invalid node read")
+        off = 0
+
+        bid = from_u64(data[off:off+8]); off+=8
+        parent = from_u64(data[off:off+8]); off+=8
+        nkeys  = from_u64(data[off:off+8]); off+=8
+
+        keys = [from_u64(data[off+i*8:off+(i+1)*8]) for i in range(MAX_KEYS)]
+        off += 8*MAX_KEYS
+        vals = [from_u64(data[off+i*8:off+(i+1)*8]) for i in range(MAX_KEYS)]
+        off += 8*MAX_KEYS
+        children = [from_u64(data[off+i*8:off+(i+1)*8]) for i in range(MAX_CHILDREN)]
+
+        return Node(bid, parent, nkeys, keys, vals, children)
 
     def write(self, f):
         """
         Writes the node to its block in the index file
         """
-        pass
+        buf = b""
+        buf += u64(self.block_id)
+        buf += u64(self.parent)
+        buf += u64(self.nkeys)
+        for k in self.keys:
+            buf += u64(k)
+        for v in self.vals:
+            buf += u64(v)
+        for c in self.children:
+            buf += u64(c)
+        buf = buf.ljust(BLOCK_SIZE, b"\x00")
+        f.seek(self.block_id*BLOCK_SIZE)
+        f.write(buf)
 
 def search_node(f, node, key):
     """
