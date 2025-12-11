@@ -31,3 +31,8 @@ In this session, I will implement the node class, so that I can start working on
 
 SESSION END
 I implemented the node class successfully. The node class now is able to read and write a node from a block. While I have not fully tested this class yet, I will eventually test it through implementation. As of right now, the logic seems sound.
+
+# 12/10/2025 7:47 PM
+
+SESSION START
+In this session, I will write all of teh code for the b-tree operations, which are the search_node, split_child, insert_nonfull, insert, and inorder functions. This will take some time, as it is a lot of code. However, implementing this will allow me to test my b-tree implementation with the node class.
