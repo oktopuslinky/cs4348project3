@@ -1,3 +1,5 @@
+import os
+
 BLOCK_SIZE = 512
 MAGIC = b"4348PRJ3"
 
@@ -226,40 +228,134 @@ def cmd_create(path):
     """
     Creates a new index file
     """
-    pass
+    if os.path.exists(path):
+        raise Exception("Index file already exists.")
+    with open(path, "wb") as f:
+        Header(0,1).write(f)
+    print("Created", path)
 
 def cmd_insert(idx, key, val):
     """
     Inserts a key-value pair into the index file.
     """
-    pass
+    if not os.path.exists(idx):
+        raise Exception("Index not found.")
+    with open(idx, "r+b") as f:
+        h = Header.read(f)
+        insert(f, h, key, val)
 
 def cmd_search(idx, key):
     """
     Searches for a key in the index file and returns the result
     """
-    pass
+    if not os.path.exists(idx):
+        raise Exception("Index not found.")
+    with open(idx, "rb") as f:
+        h = Header.read(f)
+        if h.root == 0:
+            raise Exception("Empty index.")
+        node, pos = search_node(f, Node.read(f, h.root), key)
+        if node is None:
+            print("Key not found.")
+        else:
+            print(node.keys[pos], node.vals[pos])
 
 def cmd_print(idx):
     """
     Prints all key-value pairs in sorted order
     """
-    pass
+    if not os.path.exists(idx):
+        raise Exception("Index not found.")
+    with open(idx, "rb") as f:
+        h = Header.read(f)
+        if h.root == 0:
+            return
+        out = []
+        inorder(f, Node.read(f, h.root), out)
+        for k, v in out:
+            print(k, v)
 
 def cmd_extract(idx, outcsv):
     """
     Extracts all key-value pairs from the b-tree into a CSV file.
     """
-    pass
+    if os.path.exists(outcsv):
+        raise Exception("Output file already exists.")
+    if not os.path.exists(idx):
+        raise Exception("Index not found.")
+    with open(idx, "rb") as f:
+        h = Header.read(f)
+        out = []
+        if h.root != 0:
+            inorder(f, Node.read(f, h.root), out)
+    with open(outcsv, "w") as g:
+        for k, v in out:
+            g.write(f"{k},{v}\n")
 
 def cmd_load(idx, csvf):
     """
     Loads key-value pairs from CSV file and inserts them into the b-tree.
     """
-    pass
+    if not os.path.exists(idx):
+        raise Exception("Index not found.")
+    if not os.path.exists(csvf):
+        raise Exception("CSV file not found.")
+    with open(idx, "r+b") as f:
+        h = Header.read(f)
+        with open(csvf) as g:
+            for line in g:
+                line=line.strip()
+                if not line: continue
+                k,v=line.split(',')
+                insert(f, h, int(k), int(v))
+        h.write(f)
 
 def main():
-    pass
+    print("=== Index File Manager ===")
+    print("Commands:")
+    print("\tcreate <idxfile.idx>")
+    print("\tinsert <idxfile.idx> <key> <value>")
+    print("\tsearch <idxfile.idx> <key>")
+    print("\tprint <idxfile.idx>")
+    print("\textract <idxfile.idx> <csvfile.csv>")
+    print("\tload <idxfile.idx> <csvfile.csv>")
+    print("\tquit / exit\n")
+
+    while True:
+        try:
+            line = input("project3 ").strip()
+        except EOFError:
+            print()
+            return
+
+        if not line:
+            continue
+
+        parts = line.split()
+        cmd = parts[0].lower()
+
+        if cmd in ("quit", "exit"):
+            print("Goodbye.")
+            return
+
+        try:
+            if cmd == "create" and len(parts)==2:
+                cmd_create(parts[1])
+            elif cmd == "insert" and len(parts)==4:
+                cmd_insert(parts[1], int(parts[2]), int(parts[3]))
+            elif cmd == "search" and len(parts)==3:
+                cmd_search(parts[1], int(parts[2]))
+            elif cmd == "print" and len(parts)==2:
+                cmd_print(parts[1])
+            elif cmd == "extract" and len(parts)==3:
+                cmd_extract(parts[1], parts[2])
+            elif cmd == "load" and len(parts)==3:
+                cmd_load(parts[1], parts[2])
+            else:
+                print("Invalid command or wrong argument count.")
+
+        except Exception as e:
+            print("Error:", e)
 
 if __name__ == "__main__":
     main()
