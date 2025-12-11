@@ -21,3 +21,8 @@ For this session, I will implement the header class, as it seems to be the easie
 
 SESSION END
 During this session, I was able to implement the header class. It was not as simple as I thought, as I had to consider the block of memory and where exactly I was placing which piece of information. However, once I understood it, I was able to implement the class effectively. I also added global constants so that these important values can be accessed whenever necessary, regardless of class instance. I will decide which portion to work on next in the next session.
+
+# 12/10/2025 7:23 PM
+
+SESSION START
+In this session, I will implement the node class, so that I can start working on the b-tree node management system. I will finish the read and write functions necessary for the node. I will have to make sure that I accurately keep track of the block number and don't accidentally offset any pointer.
