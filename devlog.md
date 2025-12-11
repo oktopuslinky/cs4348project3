@@ -41,3 +41,8 @@ In this session, I will write all of teh code for the b-tree operations, which a
 
 SESSION END
 For this session, I implemented the code for the b-tree operations, which was the aforementioned functions. While this did take a while, I am satisfied with what I wrote. Now, all I need to do is implement the way to get the commands from the command line and run the functions I have written. That is what I will be doing in the future sessions. This is a very interesting project so far, as I have had to implement things that we have learned in class, such as indexes and b-trees. While it is easy to learn, writing code truly tests your understanding of the subject.
+
+# 12/10/2025 8:36 PM
+
+SESSION START
+During this session, I will implement the commands that the user will input into the command line. These are teh create, insert, search, print, extract, and load functions. Once I have this done, I will test this out in the main. Because all of the functions will have been created by this point, I will complete the project in this session by calling the necessary functions in main.
