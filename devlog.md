@@ -36,3 +36,8 @@ I implemented the node class successfully. The node class now is able to read an
 
 SESSION START
 In this session, I will write all of teh code for the b-tree operations, which are the search_node, split_child, insert_nonfull, insert, and inorder functions. This will take some time, as it is a lot of code. However, implementing this will allow me to test my b-tree implementation with the node class.
+
+# 12/10/2025 8:32 PM
+
+SESSION END
+For this session, I implemented the code for the b-tree operations, which was the aforementioned functions. While this did take a while, I am satisfied with what I wrote. Now, all I need to do is implement the way to get the commands from the command line and run the functions I have written. That is what I will be doing in the future sessions. This is a very interesting project so far, as I have had to implement things that we have learned in class, such as indexes and b-trees. While it is easy to learn, writing code truly tests your understanding of the subject.
