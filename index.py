@@ -1,3 +1,11 @@
+BLOCK_SIZE = 512
+MAGIC = b"4348PRJ3"
+
+def u64(x): 
+    return x.to_bytes(8, 'big')
+def from_u64(b): 
+    return int.from_bytes(b, 'big')
+
 class Header:
     """
     This is the 512 byte header block stored at block 0 of the index file.
@@ -7,21 +15,31 @@ class Header:
         - next_block (8 bytes): next unused block
     All values are stored as big-endian unsigned 64-bit integers.
     """
-    def init():
-        pass
+    def __init__(self, root=0, next_block=1):
+        self.root = root
+        self.next_block = next_block
 
     @staticmethod
     def read(f):
         """
         Reads header block from file and returns Header object.
         """
-        pass
+        f.seek(0)
+        data = f.read(BLOCK_SIZE)
+        if data[:8] != MAGIC:
+            raise ValueError("Invalid magic number")
+        root = from_u64(data[8:16])
+        next_block = from_u64(data[16:24])
+        return Header(root, next_block)
 
     def write(self, f):
         """
         Writes header structure to block 0 in the index file
         """
-        pass
+        buf = MAGIC + u64(self.root) + u64(self.next_block)
+        buf = buf.ljust(BLOCK_SIZE, b"\x00")
+        f.seek(0)
+        f.write(buf)
 
 class Node:
     """
