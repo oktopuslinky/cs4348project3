@@ -1,0 +1,3 @@
+# 12/10/2025 5:57 PM
+
+I need to write a program that creates and manages index files, which will contain a b-tree. I can tell that I will have to implement the index file management and also think of a way to create b-trees in code. I do not have much experience with b-trees in code, so this will be an interesting challenge. There are six commands that will be used: create, insert, search, load, print, and extract. I will implement these one-by-one through the sessions. I will be using Python, as this is the language I am most comfortable with, meaning that I will be able to finish this project most efficiently. My first commit after this will be committing the file to the repo, so that I can have a canvas to start my ideas on.
